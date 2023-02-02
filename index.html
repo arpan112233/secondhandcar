@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="static\style (1).css" />
+    <title>Car Project</title>
+  </head>
+  <body>
+    <div class="main">
+      <div class="register">
+        <h2>Welcome to car price predictor!</h2>
+        <form id="register" method="POST">
+          <label for="company">Select Company</label>
+          <br />
+          <br />
+          <select id="company" name="company">
+            {% for company in companies %}
+            <option value="{{ company }}">{{ company }}</option>
+            {% endfor %}
+          </select>
+          <br />
+          <br />
+
+          <label for="car_models">Select Model</label>
+          <br />
+          <select id="car_models" name="car_models">
+            {% for model in car_models %}
+            <option value="{{ model }}">{{ model }}</option>
+            {% endfor %}
+          </select>
+          <br />
+          <br />
+
+          <label for="year">Select Year</label>
+          <br />
+          <select id="year" name="year">
+            {% for year in year %}
+            <option value="{{ year }}">{{ year }}</option>
+            {% endfor %}
+          </select>
+          <br />
+          <br />
+
+          <label for="fuel_type">Select Fuel Type</label>
+          <br />
+          <select id="fuel_type" name="fuel_type">
+            {% for fuel_type in fuel_type %}
+            <option value="{{ fuel_type }}">{{ fuel_type }}</option>
+            {% endfor %}
+          </select>
+          <br />
+          <br />
+
+          <label for="km">Enter Number of Kilometers Travelled</label>
+          <br />
+          <input id="km" type="number" name="km" />
+
+          <input type="submit" value="Predict Price" name="submit" id="submit" onclick="get_details()"/>
+        </form>
+        <br>
+        <div class="row">
+          <div class="col-12" style="text-align: center">
+            <h3><span id="prediction"></span></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  <script>
+
+    
+
+
+    function default_prevent(event) {
+      event.preventDefault();
+    }
+
+    function get_details() {
+      document.querySelector('form').addEventListener('submit', default_prevent);
+      var form_data = new FormData(document.querySelector('form'));
+      var xhr = new XMLHttpRequest();
+      
+      xhr.open('POST','/predict',true);
+      document.getElementById("prediction").innerHTML="Loading...";
+
+      xhr.onreadystatechange = function()
+      {
+        if(xhr.readyState == XMLHttpRequest.DONE)
+        {
+          document.getElementById("prediction").innerHTML="Price: Rs " + xhr.responseText;
+        }
+      }
+
+      xhr.onload=function(){
+
+      }
+      xhr.send(form_data);
+
+    }
+
+
+  </script>
+
+
+  </body>
+</html>
